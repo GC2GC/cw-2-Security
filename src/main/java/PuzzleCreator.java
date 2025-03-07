@@ -42,25 +42,24 @@ public class PuzzleCreator {
         return puzzles;
     }
 
-    // Method to create a random 8-byte DES key, last 48 bits are zero
+
     public byte[] createRandomKey() {
         byte[] key = new byte[8];  // DES key is 8 bytes (64 bits)
         Random random = new Random();
 
         // Generate random bytes for the first 2 bytes in the range 0-255
         for (int i = 0; i < 2; i++) {
-            key[i] = (byte) random.nextInt(256);  // Generate values between 0 and 255
+            key[i] = (byte) (random.nextInt(256) & 0xFF);  // Ensure value is between 0 and 255
         }
 
         // Set the last 6 bytes (48 bits) to 0x00
         Arrays.fill(key, 2, 8, (byte) 0);
-        for(byte b : key){
+        for(byte b :key){
             System.out.print(b);
         }
 
         return key;
     }
-
     // Method to encrypt a puzzle using DES encryption
     public byte[] encryptPuzzle(byte[] puzzle, SecretKey key) {
         try {
